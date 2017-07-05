@@ -10,21 +10,17 @@ namespace WeatherApp_OKopot.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.ListOfCities = new SelectList(new List<String> { "Киев", "Львов", "Харьков", "Днепропетровск", "Одесса" });
+                //new List<String>{"Киев","Львов","Харьков","Днепропетровск","Одесса"};
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult ShowWeather(string search)
         {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View("Index");
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
     }
 }
