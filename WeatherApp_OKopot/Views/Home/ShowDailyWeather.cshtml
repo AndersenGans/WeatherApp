@@ -1,0 +1,41 @@
+﻿@if (Model != null)
+{
+    <div class="row back">
+        <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">
+        <input type="button" id="three-day-btn" value="Next three day" class="btn btn-default" onclick="three_day_btn()">
+        <input type="button" id="week-btn" value="Next week" class="btn btn-default" onclick="week_btn()">
+    </div>
+
+    <table class="table">
+
+        <tr>
+            <td><b style="font-size: 16pt;"> @Model[0].CityName</b></td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="weather-item">
+                    <span>@item.Day.DayOfWeek</span>
+                    <br/>
+                    <span>@item.Day.Year-@item.Day.Month-@item.Day.Day</span>
+                </td>
+                <td>
+                    <img alt="@item.DescWeather" src="/Content/w_img/@item.IconId"/>
+                </td>
+                <td class="weather-item">
+                    <span>@item.MainWeather</span> <br/>
+                    <span class="list-day">@item.DayAvgTemp °C</span>
+                    <span class="list-night">@item.DayMinTemp °C</span>
+                </td>
+                <td>
+                    <span>Wind speed: @item.WindSpeed m/s</span><br/>
+                    <span>Pressure: @item.Pressure hpa</span>
+                </td>
+                <td>
+                    <span>Clouds: @item.Cloudiness %</span><br/>
+                    <span>Humidity: @item.Humidity %</span>
+                </td>
+            </tr>
+        }
+    </table>
+}

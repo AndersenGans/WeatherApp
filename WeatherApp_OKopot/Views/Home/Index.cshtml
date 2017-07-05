@@ -1,26 +1,41 @@
-﻿@{
+﻿@model List<WeatherApp_OKopot.Models.WeatherModel>
+@{
     ViewBag.Title = "Home Page";
 }
 
-@using (Html.BeginForm("ShowWeather", "Home", FormMethod.Post))
-{
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/buttons-control.js"></script>
+
+
     <div class="jumbotron back">
         <h1>Weather App</h1>
         <p>Weather App is a service helps you to know the weather of your town, or city, or place where you live.</p>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 back my-row-padding">
-            <h4>Select city/town...</h4>
-            @Html.DropDownList("ListOfCities", ViewBag.ListOfSities as SelectList, htmlAttributes: new {@class = "form-control"})
+<div class="container back">
+    <div class="col-md-4 my-row-padding">
+        <div class="row my-row-margin">
+            <div>
+                <h4>Select city...</h4>
+                @Html.DropDownList("ListOfCities", ViewBag.ListOfCities as SelectList, htmlAttributes: new {@class = "form-control"})
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4 back my-row-padding">
-            <h4>...or write name of it:</h4>
-            <input type="search" name="search" placeholder="Поиск по городу" class="form-control" style="display:inline-block">
-            <input type="submit" value="Find" class="btn btn-default" >
+        <div class="row my-row-margin">
+            <div>
+                <h4>...or write name of it:</h4>
+                <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control" style="display: inline-block">
+                <input type="button" id="btn-find" value="Find" class="btn btn-default" style="display: inline-block">
+            </div>
         </div>
     </div>
-}
+    <div class="col-md-8 back my-row-padding">
+        <div class="container" style="background: lightsteelblue">
+            <div id="results">
+            </div>
+        </div>
+    </div>
+</div>

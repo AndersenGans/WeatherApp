@@ -25,8 +25,50 @@ textarea {
 }
 
 .back {
-    background: antiquewhite;
+    background: burlywood;
+    padding: 10px 10px 10px 10px;
+    /*margin-left: auto;
+    margin-right: auto;*/
 }
 .my-row-padding {
     padding: 15px;
+}
+.my-row-margin {
+    margin-left: 0;
+    margin-right: 0;
+}
+.weather-item {
+    text-align: left;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+}
+
+.list-day {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background-color: #f0ad4e;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.list-night {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background-color: #999;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
 }
