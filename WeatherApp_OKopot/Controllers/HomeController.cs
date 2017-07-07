@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Ninject;
 using WeatherApp_OKopot.Models;
 using WeatherApp_OKopot.Services;
 
@@ -12,20 +13,14 @@ namespace WeatherApp_OKopot.Controllers
 {
     public class HomeController : Controller
     {
-        private static SelectList listOfCities;
-        private static WeatherControl weatherControl;
+        private readonly SelectList listOfCities;
+        private readonly IWeatherControl weatherControl;
         private List<WeatherModel> listWeathers;
 
-        public HomeController()
+        public HomeController(IWeatherControl weatherControl)
         {
-            if (listOfCities == null)
-            {
-                listOfCities = new SelectList(new List<String> { "Киев", "Львов", "Харьков", "Днепропетровск", "Одесса" });
-            }
-            if (weatherControl == null)
-            {
-                weatherControl = new WeatherControl();
-            }
+            listOfCities = new SelectList(new List<String> { "Киев", "Львов", "Харьков", "Днепропетровск", "Одесса" });
+            this.weatherControl = weatherControl;
             ViewBag.ListOfCities = listOfCities;
             listWeathers = new List<WeatherModel>();
         }
