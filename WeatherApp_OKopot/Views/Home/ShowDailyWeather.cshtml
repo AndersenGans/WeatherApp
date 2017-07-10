@@ -1,4 +1,5 @@
-﻿@if (Model != null)
+﻿@model List<WeatherApp_OKopot.Entities.WeatherEntity>
+@if (Model != null)
 {
     <div class="row back">
         <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">
@@ -9,7 +10,7 @@
     <table class="table">
 
         <tr>
-            <td><b style="font-size: 16pt;"> @Model[0].CityName</b></td>
+            <td><b style="font-size: 16pt;"> @Model[0].CityEntity.AlternativeName</b></td>
         </tr>
         @foreach (var item in Model)
         {
