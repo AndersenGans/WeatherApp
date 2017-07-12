@@ -1,5 +1,5 @@
 ﻿@model List<WeatherApp_OKopot.Entities.WeatherEntity>
-@if (Model != null)
+@if (Model.Any())
 {
     <div class="row back">
         <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">

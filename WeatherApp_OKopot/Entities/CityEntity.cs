@@ -7,6 +7,7 @@ namespace WeatherApp_OKopot.Entities
         public int CityEntityId { get; set; }
         public string Name { get; set; }
         public string AlternativeName { get; set; }
+        public bool AddToMainList { get; set; }
 
         public virtual ICollection<WeatherEntity> WeatherEntities { get; set; }
         public virtual ICollection<HistoryEntity> HistoryEntities { get; set; }

@@ -16,23 +16,28 @@ namespace WeatherApp_OKopot.Infrastructure
                 {
                     new CityEntity
                     {
-                        Name = "Киев"
+                        Name = "Киев",
+                        AddToMainList = true
                     },
                     new CityEntity
                     {
-                        Name = "Львов"
+                        Name = "Львов",
+                        AddToMainList = true
                     },
                     new CityEntity
                     {
-                        Name = "Днепропетровск"
+                        Name = "Днепропетровск",
+                        AddToMainList = true
                     },
                     new CityEntity
                     {
-                        Name = "Харьков"
+                        Name = "Харьков",
+                        AddToMainList = true
                     },
                     new CityEntity
                     {
-                        Name = "Одесса"
+                        Name = "Одесса",
+                        AddToMainList = true
                     }
                 }
             );

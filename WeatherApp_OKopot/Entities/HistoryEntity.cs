@@ -8,7 +8,7 @@ namespace WeatherApp_OKopot.Entities
         public int Id { get; set; }
         public DateTime Time { get; set; }
 
-        public string CityEntityId { get; set; }
+        public int CityEntityId { get; set; }
         public virtual CityEntity CityEntity { get; set; }
     }
 }

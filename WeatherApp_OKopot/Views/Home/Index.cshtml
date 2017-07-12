@@ -20,15 +20,22 @@
         <div class="row my-row-margin">
             <div>
                 <h4>Select city...</h4>
-                @Html.DropDownList("ListOfCities", null, htmlAttributes: new {@class = "form-control"})
+                @Html.DropDownList("ListOfCities", null, new {@class = "form-control"})
+                
+                @using (Html.BeginForm("Index", "Home"))
+                {
+                    <input type="button" id="btn-del" value="Delete from list" class="btn btn-default"  onclick="del_city()">
+                    <input type="submit" id="btn-ref" value="Refresh" class="btn btn-default" >
+                }
             </div>
         </div>
 
         <div class="row my-row-margin">
             <div>
                 <h4>...or write name of it:</h4>
-                <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control" style="display: inline-block">
-                <input type="button" id="btn-find" value="Find" class="btn btn-default" style="display: inline-block">
+                <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control">
+                <input type="button" id="btn-find" value="Find" class="btn btn-default">
+                <input type="checkbox" id="chck-add" name="addToMainList" class="checkbox checkbox-inline">Add to main list
             </div>
         </div>
     </div>
@@ -38,4 +45,7 @@
             </div>
         </div>
     </div>
+</div>
+<div class="back">
+    @Html.ActionLink("Show history of requests", "HistoryOfWeather")
 </div>

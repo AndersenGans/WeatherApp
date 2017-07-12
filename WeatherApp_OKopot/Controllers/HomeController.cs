@@ -15,16 +15,17 @@ namespace WeatherApp_OKopot.Controllers
         {
             this.weatherControl = weatherControl;
             dbContext = new WeatherDBContext();
-            ViewBag.ListOfCities = new SelectList(dbContext.CityEntities, "Name", "Name");
+            var listOfCities = dbContext.CityEntities.Where(item => item.AddToMainList);
+            ViewBag.ListOfCities = new SelectList(listOfCities, "Name", "Name");
         }
         public ActionResult Index()
         {
             return View();
         }
 
-        public async Task<ActionResult> ShowDailyWeather(string search)
+        public async Task<ActionResult> ShowDailyWeather(string search, bool addToMainList)
         {
-            await weatherControl.DailyWeather(search);
+            await weatherControl.DailyWeather(search, addToMainList);
             var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
             return PartialView(listOfWeathers.ToList());
         }
@@ -32,15 +33,37 @@ namespace WeatherApp_OKopot.Controllers
         public async Task<ActionResult> ShowThreeDaysWeather(string search)
         {
             await weatherControl.ManyDaysWeather(search, 3);
-            return PartialView("ShowDailyWeather", dbContext.WeatherEntities.ToList());
+            var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
+            return PartialView("ShowDailyWeather", listOfWeathers.ToList());
         }
 
         public async Task<ActionResult> ShowWeekWeather(string search)
         {
             await weatherControl.ManyDaysWeather(search, 7);
-            return PartialView("ShowDailyWeather", dbContext.WeatherEntities.ToList());
+            var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
+            return PartialView("ShowDailyWeather", listOfWeathers.ToList());
         }
 
+        public ActionResult HistoryOfWeather()
+        {
+            return View(dbContext.HistoryEntities.ToList());
+        }
+
+        public ActionResult DeleteCity(string cityName)
+        {
+            var delCity = dbContext.CityEntities.Where(item => item.Name == cityName);
+            dbContext.CityEntities.RemoveRange(delCity);
+            dbContext.SaveChanges();
+            return View("Index");
+        }
+
+        public ActionResult ClearHistory()
+        {
+            dbContext.HistoryEntities.RemoveRange(dbContext.HistoryEntities);
+            dbContext.SaveChanges();
+            return View("HistoryOfWeather",dbContext.HistoryEntities.ToList());
+        }
+        
 
     }
 }

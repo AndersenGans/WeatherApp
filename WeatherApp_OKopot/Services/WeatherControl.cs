@@ -3,23 +3,25 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
 using Newtonsoft.Json;
 using WeatherApp_OKopot.Entities;
 using WeatherApp_OKopot.Infrastructure;
 using WeatherApp_OKopot.Models;
+using ModelState = System.Web.Mvc.ModelState;
 
 namespace WeatherApp_OKopot.Services
 {
     public interface IWeatherControl
     {
-        Task DailyWeather(string cityName);
+        Task DailyWeather(string cityName, bool addToMainList);
         Task ManyDaysWeather(string cityName, int countOfDays);
     }
 
     public class WeatherControl:IWeatherControl
     {
         WeatherDBContext weatherDbContext = new WeatherDBContext();
-        public async Task DailyWeather(string cityName)
+        public async Task DailyWeather(string cityName, bool addToMainList)
         {
             try
             {
@@ -33,33 +35,19 @@ namespace WeatherApp_OKopot.Services
                     {
                         var result = await response.Content.ReadAsStringAsync();
                         var rootObj = JsonConvert.DeserializeObject<RootObject>(result);
-                        var cityFromDb = weatherDbContext
-                            .CityEntities
-                            .FirstOrDefault
-                            (item => item.Name == cityName);
-
+                        var cityFromDb = CheckingCity(cityName, rootObj, addToMainList);
                         if (cityFromDb == null)
                         {
-                            if (rootObj.city.name != "")
-                            {
-                                cityFromDb = new CityEntity
-                                {
-                                    Name = cityName,
-                                    AlternativeName = rootObj.city.name
-                                };
-                                weatherDbContext.CityEntities.Add(cityFromDb);
-                            }
-                            else
-                            {
-                                return;
-                            }
+                            return;
                         }
-                        else
+                        //если есть запись погоды по такому городу, то удаляем запись
+                        var deleteWeather = weatherDbContext.WeatherEntities.Where(
+                            item => item.CityEntityId == cityFromDb.CityEntityId);
+                        if (deleteWeather.Any())
                         {
-                            cityFromDb.AlternativeName = rootObj.city.name;
-                            weatherDbContext.Entry(cityFromDb).State = EntityState.Modified;
-                            
+                            weatherDbContext.WeatherEntities.RemoveRange(deleteWeather);
                         }
+
                         weatherDbContext.WeatherEntities.Add(new WeatherEntity
                         {
                             CityEntityId = cityFromDb.CityEntityId,
@@ -74,6 +62,19 @@ namespace WeatherApp_OKopot.Services
                             IconId = rootObj.list[0].weather[0].icon + ".png",
                             Day = DateTime.Today
                         });
+
+                        //var historyEntity = weatherDbContext.HistoryEntities.Where(
+                        //    item => item.CityEntityId == cityFromDb.CityEntityId );
+                        //if (!historyEntity.Any())
+                        //{
+                            weatherDbContext.HistoryEntities.Add(new HistoryEntity
+                            {
+                                Time = DateTime.Now,
+                                CityEntityId = cityFromDb.CityEntityId
+                            });
+                        //}
+                        
+                        
                         weatherDbContext.SaveChanges();
                     }
                 }
@@ -95,16 +96,23 @@ namespace WeatherApp_OKopot.Services
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     var rootObj = JsonConvert.DeserializeObject<RootObject>(result);
-                    var cityFromDb = weatherDbContext.CityEntities.FirstOrDefault(item => item.Name == rootObj.city.name);
+                    var cityFromDb = CheckingCity(cityName, rootObj, false);
                     if (cityFromDb == null)
                     {
                         return;
                     }
 
+                    var deleteWeather = weatherDbContext.WeatherEntities.Where(
+                        item => item.CityEntityId == cityFromDb.CityEntityId);
+                    if (deleteWeather.Count() != 0)
+                    {
+                        weatherDbContext.WeatherEntities.RemoveRange(deleteWeather);
+                    }
+
                     for (int i = 0; i < rootObj.list.Count; i++)
                     {
                         weatherDbContext.WeatherEntities.Add(
-                            new WeatherEntity()
+                            new WeatherEntity
                             {
                                 CityEntityId = cityFromDb.CityEntityId,
                                 Cloudiness = rootObj.list[i].clouds,
@@ -123,6 +131,49 @@ namespace WeatherApp_OKopot.Services
                     weatherDbContext.SaveChanges();
                 }
             }
+        }
+
+        //провераяем наличие города в базе
+        public CityEntity CheckingCity(string cityName, RootObject rootObj, bool addToMainList)
+        {
+            //есть ли в базе город с таким названием
+            var cityFromDb = weatherDbContext
+                .CityEntities
+                .FirstOrDefault
+                (item => item.Name == cityName);
+            //если нет, но API вернул какую-то информацию
+            if (cityFromDb == null)
+            {
+                if (rootObj.city.name != "")
+                {
+                    //создаем новую запись "CityEntity"
+                    cityFromDb = new CityEntity
+                    {
+                        Name = cityName,
+                        AlternativeName = rootObj.city.name,
+                        AddToMainList = false
+                    };
+                    if (addToMainList)
+                    {
+                        cityFromDb.AddToMainList = true;
+                    }
+                    weatherDbContext.CityEntities.Add(cityFromDb);
+                    weatherDbContext.SaveChanges();
+                        
+                    return cityFromDb;
+                }
+                return null;
+
+            }
+            //если такой город есть, то добавляем ему альтернативное имя, которое вернул API
+            cityFromDb.AlternativeName = rootObj.city.name;
+            if (addToMainList)
+            {
+                cityFromDb.AddToMainList = true;
+            }
+            weatherDbContext.Entry(cityFromDb).State = EntityState.Modified;
+            weatherDbContext.SaveChanges();
+            return cityFromDb;
         }
     }
 }
