@@ -1,5 +1,7 @@
 using System.Web.Mvc;
+using Ninject.Modules;
 using Ninject.Web.Mvc;
+using WeatherApp_OKopot.BLL.Infrastructure;
 using WeatherApp_OKopot.Infrastructure;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WeatherApp_OKopot.App_Start.NinjectWebCommon), "Start")]
@@ -43,7 +45,8 @@ namespace WeatherApp_OKopot.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
+            var modules = new INinjectModule[] {new BLL.Infrastructure.NinjectModule("WeatherDB")};
+            var kernel = new StandardKernel(modules);
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);

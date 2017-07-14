@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot", "WeatherApp_OKopot\WeatherApp_OKopot.csproj", "{56EA6893-4218-4646-8AC4-99C69660C62E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot.DAL", "WeatherApp_OKopot.DAL\WeatherApp_OKopot.DAL.csproj", "{3EE3EA62-A229-405E-BE88-44C78CBFB321}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot.BLL", "WeatherApp_OKopot.BLL\WeatherApp_OKopot.BLL.csproj", "{00ADE220-FCF0-426D-8375-B3F730F8DFED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{56EA6893-4218-4646-8AC4-99C69660C62E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56EA6893-4218-4646-8AC4-99C69660C62E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56EA6893-4218-4646-8AC4-99C69660C62E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE3EA62-A229-405E-BE88-44C78CBFB321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE3EA62-A229-405E-BE88-44C78CBFB321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE3EA62-A229-405E-BE88-44C78CBFB321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE3EA62-A229-405E-BE88-44C78CBFB321}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00ADE220-FCF0-426D-8375-B3F730F8DFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00ADE220-FCF0-426D-8375-B3F730F8DFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00ADE220-FCF0-426D-8375-B3F730F8DFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00ADE220-FCF0-426D-8375-B3F730F8DFED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

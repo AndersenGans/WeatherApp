@@ -2,39 +2,40 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using WeatherApp_OKopot.Entities;
+using System.Text;
+using System.Threading.Tasks;
+using WeatherApp_OKopot.DAL.Entities;
 
-namespace WeatherApp_OKopot.Infrastructure
+namespace WeatherApp_OKopot.DAL.EF
 {
-    public class WeatherDbInitializer:DropCreateDatabaseIfModelChanges<WeatherDBContext>
+    class WeatherDbInitializer:DropCreateDatabaseIfModelChanges<WeatherDbContext>
     {
-        protected override void Seed(WeatherDBContext context)
+        protected override void Seed(WeatherDbContext context)
         {
-            context.CityEntities.AddRange(
-                new List<CityEntity>
+            context.Cities.AddRange(
+                new List<City>
                 {
-                    new CityEntity
+                    new City
                     {
                         Name = "Киев",
                         AddToMainList = true
                     },
-                    new CityEntity
+                    new City
                     {
                         Name = "Львов",
                         AddToMainList = true
                     },
-                    new CityEntity
+                    new City
                     {
                         Name = "Днепропетровск",
                         AddToMainList = true
                     },
-                    new CityEntity
+                    new City
                     {
                         Name = "Харьков",
                         AddToMainList = true
                     },
-                    new CityEntity
+                    new City
                     {
                         Name = "Одесса",
                         AddToMainList = true

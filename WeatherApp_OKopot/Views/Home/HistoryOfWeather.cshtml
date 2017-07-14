@@ -1,4 +1,4 @@
-﻿@model List<WeatherApp_OKopot.Entities.HistoryEntity>
+﻿@model List<WeatherApp_OKopot.Models.HistoryModel>
 
 @{
     ViewBag.Title = "HistoryOfWeather";
@@ -21,37 +21,40 @@
                 <b>Weather</b>
             </td>
         </tr>
-        @foreach (var item in Model)
+        @if (Model.Any())
         {
-            <tr>
-                <td>
-                    @item.CityEntity.AlternativeName
-                </td>
-                <td>
-                    @item.Time
-                </td>
-                <td class="weather-item">
-                    <span>@item.Time.DayOfWeek</span>
-                    <br/>
-                    <span>@item.Time.Year-@item.Time.Month-@item.Time.Day</span>
-                </td>
-                <td>
-                    <img alt="@item.CityEntity.WeatherEntities.ToList()[0].DescWeather" src="/Content/w_img/@item.CityEntity.WeatherEntities.ToList()[0].IconId"/>
-                </td>
-                <td class="weather-item">
-                    <span>@item.CityEntity.WeatherEntities.ToList()[0].MainWeather</span> <br/>
-                    <span class="list-day">@item.CityEntity.WeatherEntities.ToList()[0].DayAvgTemp °C</span>
-                    <span class="list-night">@item.CityEntity.WeatherEntities.ToList()[0].DayMinTemp °C</span>
-                </td>
-                <td>
-                    <span>Wind speed: @item.CityEntity.WeatherEntities.ToList()[0].WindSpeed m/s</span><br/>
-                    <span>Pressure: @item.CityEntity.WeatherEntities.ToList()[0].Pressure hpa</span>
-                </td>
-                <td>
-                    <span>Clouds: @item.CityEntity.WeatherEntities.ToList()[0].Cloudiness %</span><br/>
-                    <span>Humidity: @item.CityEntity.WeatherEntities.ToList()[0].Humidity %</span>
-                </td>
-            </tr>
+            foreach (var item in Model)
+             {
+                 <tr>
+                     <td>
+                         @item.City.AlternativeName
+                     </td>
+                     <td>
+                         @item.Time
+                     </td>
+                     <td class="weather-item">
+                         <span>@item.Time.DayOfWeek</span>
+                         <br/>
+                         <span>@item.Time.Year-@item.Time.Month-@item.Time.Day</span>
+                     </td>
+                     <td>
+                         <img alt="@item.City.Weathers.ToList()[0].DescWeather" src="/Content/w_img/@item.City.Weathers.ToList()[0].IconId"/>
+                     </td>
+                     <td class="weather-item">
+                         <span>@item.City.Weathers.ToList()[0].MainWeather</span> <br/>
+                         <span class="list-day">@item.City.Weathers.ToList()[0].DayAvgTemp °C</span>
+                         <span class="list-night">@item.City.Weathers.ToList()[0].DayMinTemp °C</span>
+                     </td>
+                     <td>
+                         <span>Wind speed: @item.City.Weathers.ToList()[0].WindSpeed m/s</span><br/>
+                         <span>Pressure: @item.City.Weathers.ToList()[0].Pressure hpa</span>
+                     </td>
+                     <td>
+                         <span>Clouds: @item.City.Weathers.ToList()[0].Cloudiness %</span><br/>
+                         <span>Humidity: @item.City.Weathers.ToList()[0].Humidity %</span>
+                     </td>
+                 </tr>
+             }
         }
     </table>
 </div>

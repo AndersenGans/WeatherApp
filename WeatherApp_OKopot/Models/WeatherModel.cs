@@ -1,11 +1,11 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
-namespace WeatherApp_OKopot.Entities
+namespace WeatherApp_OKopot.Models
 {
-    public class WeatherEntity
+    public class WeatherModel
     {
-        public int WeatherEntityId { get; set; }
+        public int WeatherId { get; set; }
         public double DayAvgTemp { get; set; }
         public double DayMinTemp { get; set; }
         public double Pressure { get; set; }
@@ -16,8 +16,7 @@ namespace WeatherApp_OKopot.Entities
         public double Cloudiness { get; set; }
         public string IconId { get; set; }
         public DateTime Day { get; set; }
-
-        public int CityEntityId { get; set; }
-        public virtual CityEntity CityEntity { get; set; }
+        public int CityId { get; set; }
+        public string City { get; set; }
     }
 }

@@ -1,69 +1,143 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.Mvc;
-using WeatherApp_OKopot.Infrastructure;
-using WeatherApp_OKopot.Services;
+using AutoMapper;
+using WeatherApp_OKopot.BLL.DTO;
+using WeatherApp_OKopot.BLL.Infrastructure;
+using WeatherApp_OKopot.BLL.Interfaces;
+using WeatherApp_OKopot.Models;
 
 namespace WeatherApp_OKopot.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IWeatherControl weatherControl;
-        private WeatherDBContext dbContext;
-        
-        public HomeController(IWeatherControl weatherControl)
+        private readonly IService service;
+        private readonly string key = WebConfigurationManager.AppSettings["WeatherKey"];
+        private readonly ModelForView modelForView;
+
+
+        public HomeController(IService service)
         {
-            this.weatherControl = weatherControl;
-            dbContext = new WeatherDBContext();
-            var listOfCities = dbContext.CityEntities.Where(item => item.AddToMainList);
-            ViewBag.ListOfCities = new SelectList(listOfCities, "Name", "Name");
+            this.service = service;
+            modelForView = new ModelForView
+            {
+                ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name")
+            };
         }
+
         public ActionResult Index()
         {
-            return View();
+            return View(modelForView);
+        }
+
+        public async Task<ActionResult> ShowDailyWeatherPartial(string search)
+        {
+            try
+            {
+                await service.GetDailyWeathers(search, key, false);
+                GetModelForView(search);
+                return PartialView(modelForView);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return View("Index", modelForView);
+            }
         }
 
         public async Task<ActionResult> ShowDailyWeather(string search, bool addToMainList)
         {
-            await weatherControl.DailyWeather(search, addToMainList);
-            var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
-            return PartialView(listOfWeathers.ToList());
+            try
+            {
+                await service.GetDailyWeathers(search, key, addToMainList);
+                GetModelForView(search);
+                return View("Index", modelForView);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return View("Index", modelForView);
+            }
         }
+
+
 
         public async Task<ActionResult> ShowThreeDaysWeather(string search)
         {
-            await weatherControl.ManyDaysWeather(search, 3);
-            var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
-            return PartialView("ShowDailyWeather", listOfWeathers.ToList());
+            try
+            {
+                await service.GetManyDaysWeathers(search, key, 3);
+                GetModelForView(search);
+                return PartialView("ShowDailyWeatherPartial", modelForView);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return PartialView("ShowDailyWeatherPartial", modelForView);
+            }
         }
 
         public async Task<ActionResult> ShowWeekWeather(string search)
         {
-            await weatherControl.ManyDaysWeather(search, 7);
-            var listOfWeathers = dbContext.WeatherEntities.Where(item => item.CityEntity.Name == search);
-            return PartialView("ShowDailyWeather", listOfWeathers.ToList());
+            try
+            {
+                await service.GetManyDaysWeathers(search, key, 7);
+                GetModelForView(search);
+                return PartialView("ShowDailyWeatherPartial", modelForView);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return PartialView("ShowDailyWeatherPartial", modelForView);
+            }
         }
 
         public ActionResult HistoryOfWeather()
         {
-            return View(dbContext.HistoryEntities.ToList());
+            var historiesDTO = service.GetHistories();
+            var histories = Mapper.Map<IEnumerable<HistoryDTO>, List<HistoryModel>>(historiesDTO);
+            return View(histories);
         }
 
-        public ActionResult DeleteCity(string cityName)
+        public ActionResult DeleteCity(string ListOfCities)
         {
-            var delCity = dbContext.CityEntities.Where(item => item.Name == cityName);
-            dbContext.CityEntities.RemoveRange(delCity);
-            dbContext.SaveChanges();
-            return View("Index");
+            service.DeleteCitiesFromMainList(ListOfCities);
+            modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
+            return View("Index", modelForView);
         }
 
         public ActionResult ClearHistory()
         {
-            dbContext.HistoryEntities.RemoveRange(dbContext.HistoryEntities);
-            dbContext.SaveChanges();
-            return View("HistoryOfWeather",dbContext.HistoryEntities.ToList());
+            service.DeleteHistories();
+            var historiesDTO = service.GetHistories();
+            var histories = Mapper.Map<IEnumerable<HistoryDTO>, List<HistoryModel>>(historiesDTO);
+            return View("HistoryOfWeather", histories);
         }
-        
 
+        protected override void Dispose(bool disposing)
+        {
+            service.Dispose();
+            base.Dispose(disposing);
+        }
+
+
+        private void GetModelForView(string search)
+        {
+            var weathersDTO = service.FindWeathers(search);
+            var weathers = Mapper.Map<IEnumerable<WeatherDTO>, List<WeatherModel>>(weathersDTO);
+            modelForView.Weathers = weathers;
+            modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
+            try
+            {
+                modelForView.CityName = service.GetCityByName(search).AlternativeName;
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+            }
+        }
     }
 }

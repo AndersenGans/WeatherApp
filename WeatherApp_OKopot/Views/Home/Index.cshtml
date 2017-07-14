@@ -1,4 +1,4 @@
-﻿@model List<WeatherApp_OKopot.Entities.WeatherEntity>
+﻿@model WeatherApp_OKopot.Models.ModelForView
 @{
     ViewBag.Title = "Home Page";
 }
@@ -20,12 +20,12 @@
         <div class="row my-row-margin">
             <div>
                 <h4>Select city...</h4>
-                @Html.DropDownList("ListOfCities", null, new {@class = "form-control"})
+                @*@Html.DropDownList("ListOfCities", null, new {@class = "form-control"})*@
                 
-                @using (Html.BeginForm("Index", "Home"))
+                @using (Html.BeginForm("DeleteCity", "Home"))
                 {
-                    <input type="button" id="btn-del" value="Delete from list" class="btn btn-default"  onclick="del_city()">
-                    <input type="submit" id="btn-ref" value="Refresh" class="btn btn-default" >
+                    @Html.DropDownListFor(model => model.ListOfCities, Model.ListOfCities as SelectList, new { @class = "form-control" })
+                    <input type="submit" id="btn-del" value="Delete from list" class="btn btn-default">
                 }
             </div>
         </div>
@@ -33,15 +33,61 @@
         <div class="row my-row-margin">
             <div>
                 <h4>...or write name of it:</h4>
-                <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control">
-                <input type="button" id="btn-find" value="Find" class="btn btn-default">
-                <input type="checkbox" id="chck-add" name="addToMainList" class="checkbox checkbox-inline">Add to main list
+                @using (Html.BeginForm("ShowDailyWeather", "Home"))
+                {
+                    <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control">
+                    @Html.ValidationMessage("city", new { @class = "text-danger" })<br/>
+                    <input type="submit" id="btn-find" value="Find" class="btn btn-default">
+                    @Html.CheckBox("addToMainList", false, new { @class= "checkbox checkbox-inline" })
+                    <span>Add to main list</span>
+                }
             </div>
         </div>
     </div>
     <div class="col-md-8 back my-row-padding">
         <div class="container" style="background: lightsteelblue">
             <div id="results">
+                @if (Model.Weathers != null)
+                {
+                    <div class="row back">
+                        <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">
+                        <input type="button" id="three-day-btn" value="Next three day" class="btn btn-default" onclick="three_day_btn()">
+                        <input type="button" id="week-btn" value="Next week" class="btn btn-default" onclick="week_btn()">
+                    </div>
+
+                    <table class="table">
+
+                        <tr>
+                            <td><b style="font-size: 16pt;"> @Model.CityName</b></td>
+                        </tr>
+                        @foreach (var item in Model.Weathers)
+                        {
+                            <tr>
+                                <td class="weather-item">
+                                    <span>@item.Day.DayOfWeek</span>
+                                    <br/>
+                                    <span>@item.Day.Year-@item.Day.Month-@item.Day.Day</span>
+                                </td>
+                                <td>
+                                    <img alt="@item.DescWeather" src="/Content/w_img/@item.IconId"/>
+                                </td>
+                                <td class="weather-item">
+                                    <span>@item.MainWeather</span> <br/>
+                                    <span class="list-day">@item.DayAvgTemp °C</span>
+                                    <span class="list-night">@item.DayMinTemp °C</span>
+                                </td>
+                                <td>
+                                    <span>Wind speed: @item.WindSpeed m/s</span><br/>
+                                    <span>Pressure: @item.Pressure hpa</span>
+                                </td>
+                                <td>
+                                    <span>Clouds: @item.Cloudiness %</span><br/>
+                                    <span>Humidity: @item.Humidity %</span>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
             </div>
         </div>
     </div>

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Ninject;
-using WeatherApp_OKopot.Services;
+using WeatherApp_OKopot.BLL.Interfaces;
+using WeatherApp_OKopot.BLL.Services;
 
 namespace WeatherApp_OKopot.Infrastructure
 {
@@ -30,7 +29,7 @@ namespace WeatherApp_OKopot.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<IWeatherControl>().To<WeatherControl>();
+            kernel.Bind<IService>().To<Service>();
         }
     }
 }
