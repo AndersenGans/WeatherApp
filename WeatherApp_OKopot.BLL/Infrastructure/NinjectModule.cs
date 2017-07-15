@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Ninject;
-using WeatherApp_OKopot.BLL.Interfaces;
-using WeatherApp_OKopot.BLL.Services;
-using WeatherApp_OKopot.DAL.Repositories;
+﻿using WeatherApp_OKopot.DAL.Repositories;
 using WeatherApp_OKopot.DAL.Interfaces;
 
 namespace WeatherApp_OKopot.BLL.Infrastructure

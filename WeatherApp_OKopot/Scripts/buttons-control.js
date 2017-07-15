@@ -10,7 +10,8 @@ $(document).ready(function() {
         $('#results').empty();
         $('#results').load("/Home/ShowDailyWeatherPartial?search=" + result);
     });
-
+    if (document.getElementById("cityName") !== null)
+    city = document.getElementById("cityName").value;
     //$('#btn-find').click(function() {
     //    city = document.getElementById("city").value;
     //    var addToList = encodeURIComponent(document.getElementById("chck-add").checked);
@@ -20,11 +21,9 @@ $(document).ready(function() {
 });
 
 
-//var city = document.getElementById("city").value;
+
 function day_btn() {
     var result = encodeURIComponent(city);
-    console.log(result);
-    console.log(city);
     $('#results').load("/Home/ShowDailyWeatherPartial?search=" + result);
 }
 

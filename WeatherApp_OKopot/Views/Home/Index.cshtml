@@ -25,6 +25,7 @@
                 @using (Html.BeginForm("DeleteCity", "Home"))
                 {
                     @Html.DropDownListFor(model => model.ListOfCities, Model.ListOfCities as SelectList, new { @class = "form-control" })
+                    @Html.ValidationMessage("ListOfCities", new { @class = "text-danger" })<br />
                     <input type="submit" id="btn-del" value="Delete from list" class="btn btn-default">
                 }
             </div>
@@ -54,7 +55,7 @@
                         <input type="button" id="three-day-btn" value="Next three day" class="btn btn-default" onclick="three_day_btn()">
                         <input type="button" id="week-btn" value="Next week" class="btn btn-default" onclick="week_btn()">
                     </div>
-
+                    <input type="hidden" id="cityName" value=@Model.CityName>
                     <table class="table">
 
                         <tr>

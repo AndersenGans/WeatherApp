@@ -22,7 +22,7 @@ namespace WeatherApp_OKopot
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile(new MapperWebProfile());
-                cfg.AddProfile(new MapperBLLProfiile());
+                cfg.AddProfile(new MapperBLLProfile());
             });
         }
     }

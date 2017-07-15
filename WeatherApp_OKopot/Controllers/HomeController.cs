@@ -39,7 +39,7 @@ namespace WeatherApp_OKopot.Controllers
             {
                 await service.GetDailyWeathers(search, key, false);
                 GetModelForView(search);
-                return PartialView(modelForView);
+                return PartialView("ShowDailyWeatherPartial", modelForView);
             }
             catch (ValidationException ex)
             {
@@ -62,8 +62,6 @@ namespace WeatherApp_OKopot.Controllers
                 return View("Index", modelForView);
             }
         }
-
-
 
         public async Task<ActionResult> ShowThreeDaysWeather(string search)
         {
@@ -99,14 +97,22 @@ namespace WeatherApp_OKopot.Controllers
         {
             var historiesDTO = service.GetHistories();
             var histories = Mapper.Map<IEnumerable<HistoryDTO>, List<HistoryModel>>(historiesDTO);
-            return View(histories);
+            return View("HistoryOfWeather", histories);
         }
 
         public ActionResult DeleteCity(string ListOfCities)
         {
-            service.DeleteCitiesFromMainList(ListOfCities);
-            modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
-            return View("Index", modelForView);
+            try
+            {
+                service.DeleteCitiesFromMainList(ListOfCities);
+                modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
+                return View("Index", modelForView);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return View("Index", modelForView);
+            }
         }
 
         public ActionResult ClearHistory()
@@ -124,14 +130,14 @@ namespace WeatherApp_OKopot.Controllers
         }
 
 
-        private void GetModelForView(string search)
+        internal void GetModelForView(string search)
         {
-            var weathersDTO = service.FindWeathers(search);
-            var weathers = Mapper.Map<IEnumerable<WeatherDTO>, List<WeatherModel>>(weathersDTO);
-            modelForView.Weathers = weathers;
-            modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
             try
             {
+                var weathersDTO = service.FindWeathers(search);
+                var weathers = Mapper.Map<IEnumerable<WeatherDTO>, List<WeatherModel>>(weathersDTO);
+                modelForView.Weathers = weathers;
+                modelForView.ListOfCities = new SelectList(service.FindCitiesToAddToMainList(), "Name", "Name");
                 modelForView.CityName = service.GetCityByName(search).AlternativeName;
             }
             catch (ValidationException ex)

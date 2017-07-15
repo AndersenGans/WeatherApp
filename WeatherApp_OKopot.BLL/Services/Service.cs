@@ -30,20 +30,28 @@ namespace WeatherApp_OKopot.BLL.Services
 
         public IEnumerable<WeatherDTO> FindWeathers(string cityName)
         {
-            return Mapper.Map<IEnumerable<Weather>, List<WeatherDTO>>(Database.Weathers.Find(item => item.City.Name == cityName));
+            if(cityName == "")
+                throw new ValidationException("There's no city like in the field", "city");
+            
+            var result = Mapper.Map<IEnumerable<Weather>, List<WeatherDTO>>(Database.Weathers.Find(item => item.City.Name == cityName));
+
+            return result;
         }
 
         public async Task GetDailyWeathers(string cityName, string key, bool addToMainList)
         {
             RootObject rootObj = await RequestingFromAPI(cityName, 1, key);
             var cityFromDb = CheckingCity(cityName, rootObj, addToMainList);
+
             if (cityFromDb == null)
             {
                 return;
             }
+
             //если есть запись погоды по такому городу, то удаляем запись
             var deleteWeather = Database.Weathers.Find(
                 item => item.CityId == cityFromDb.CityId);
+
             if (deleteWeather.Any())
             {
                 Database.Weathers.Delete(deleteWeather);
@@ -75,6 +83,7 @@ namespace WeatherApp_OKopot.BLL.Services
         {
             var rootObj = await RequestingFromAPI(cityName, countOfDays, key);
             var cityFromDb = CheckingCity(cityName, rootObj, false);
+
             if (cityFromDb == null)
             {
                 return;
@@ -83,6 +92,7 @@ namespace WeatherApp_OKopot.BLL.Services
             //если есть запись погоды по такому городу, то удаляем запись
             var deleteWeather = Database.Weathers.Find(
                 item => item.CityId == cityFromDb.CityId);
+
             if (deleteWeather.Any())
             {
                 Database.Weathers.Delete(deleteWeather);
@@ -110,25 +120,30 @@ namespace WeatherApp_OKopot.BLL.Services
 
         public IEnumerable<HistoryDTO> GetHistories()
         {
-            return Mapper.Map<IEnumerable<History>, List<HistoryDTO>>(Database.Histories.GetAll());
+            var result = Mapper.Map<IEnumerable<History>, List<HistoryDTO>>(Database.Histories.GetAll());
+
+            return result;
         }
 
         public void DeleteCitiesFromMainList(string cityName)
         {
-            if (cityName != null)
-            {
-                var city = Database.Cities.GetAll().First(item => item.Name == cityName);
-                city.AddToMainList = false;
-                Database.Cities.Update(city);
-                Database.Save();
-            }
+            if (String.IsNullOrEmpty(cityName))
+                throw new ValidationException("There's no city like in the field", "ListOfCities");
+
+            var city = Database.Cities.GetAll().First(item => item.Name == cityName);
+            city.AddToMainList = false;
+            Database.Cities.Update(city);
+            Database.Save();
         }
 
         public CityDTO GetCityByName(string cityName)
         {
             if(cityName == "")
                 throw new ValidationException("There's no city like in the field", "city");
-            return Mapper.Map<City, CityDTO>(Database.Cities.GetAll().First(item => item.Name == cityName));
+
+            var result = Mapper.Map<City, CityDTO>(Database.Cities.GetAll().First(item => item.Name == cityName));
+
+            return result;
         }
 
         public void DeleteHistories()
@@ -147,7 +162,7 @@ namespace WeatherApp_OKopot.BLL.Services
 
 
 
-        private City CheckingCity(string cityName, RootObject rootObj, bool addToMainList)
+        internal City CheckingCity(string cityName, RootObject rootObj, bool addToMainList)
         {
             //есть ли в базе город с таким названием
             var cityFromDb = Database
@@ -155,8 +170,10 @@ namespace WeatherApp_OKopot.BLL.Services
                 .Find
                 (item => item.Name == cityName).FirstOrDefault();
             //если нет, но API вернул какую-то информацию
+
             if (cityFromDb == null)
             {
+
                 if (rootObj != null)
                 {
                     //создаем новую запись "CityEntity"
@@ -166,6 +183,7 @@ namespace WeatherApp_OKopot.BLL.Services
                         AlternativeName = rootObj.city.name,
                         AddToMainList = false
                     };
+
                     if (addToMainList)
                     {
                         cityFromDb.AddToMainList = true;
@@ -176,20 +194,22 @@ namespace WeatherApp_OKopot.BLL.Services
                     return cityFromDb;
                 }
                 throw new ValidationException("There's no city like in the field", "city");
-
             }
             //если такой город есть, то добавляем ему альтернативное имя, которое вернул API
             cityFromDb.AlternativeName = rootObj.city.name;
+
             if (addToMainList)
             {
                 cityFromDb.AddToMainList = true;
             }
+
             Database.Cities.Update(cityFromDb);
             Database.Save();
+
             return cityFromDb;
         }
 
-        private async Task<RootObject> RequestingFromAPI(string cityName, int countOfDays, string key)
+        internal async Task<RootObject> RequestingFromAPI(string cityName, int countOfDays, string key)
         {
             using (var client = new HttpClient())
             using (HttpResponseMessage response =

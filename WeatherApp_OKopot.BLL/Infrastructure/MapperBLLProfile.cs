@@ -5,9 +5,9 @@ using WeatherApp_OKopot.DAL.Entities;
 
 namespace WeatherApp_OKopot.BLL.Infrastructure
 {
-    public class MapperBLLProfiile:Profile
+    public class MapperBLLProfile:Profile
     {
-        public MapperBLLProfiile()
+        public MapperBLLProfile()
         {
             CreateMap<CityDTO, City>()
                 .ForMember(c => c
