@@ -211,18 +211,17 @@ namespace WeatherApp_OKopot.BLL.Services
 
         internal async Task<RootObject> RequestingFromAPI(string cityName, int countOfDays, string key)
         {
-            using (var client = new HttpClient())
-            using (HttpResponseMessage response =
-                await client.GetAsync("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName +
-                                      "&units=metric&cnt=" + countOfDays + "&APPID=" + key))
+            var client = new HttpClient();
+            var response = client.GetAsync("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName +
+                                      "&units=metric&cnt=" + countOfDays + "&APPID=" + key).Result;
+
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    var rootObj = JsonConvert.DeserializeObject<RootObject>(result);
-                    return rootObj;
-                }
+                var result = await response.Content.ReadAsStringAsync();
+                var rootObj = JsonConvert.DeserializeObject<RootObject>(result);
+                return rootObj;
             }
+
             return null;
         }
     }

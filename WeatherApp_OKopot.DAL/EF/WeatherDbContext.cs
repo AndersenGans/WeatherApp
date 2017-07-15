@@ -5,13 +5,10 @@ namespace WeatherApp_OKopot.DAL.EF
 {
     class WeatherDbContext:DbContext
     {
-        static WeatherDbContext()
-        {
-            Database.SetInitializer<WeatherDbContext>(new WeatherDbInitializer());
-        }
-
         public WeatherDbContext(string connectionString) :base(connectionString)
         {
+            Database.SetInitializer(new WeatherDbInitializer());
+            Database.Initialize(true);
         }
 
         public DbSet<Weather> Weathers { get; set; }

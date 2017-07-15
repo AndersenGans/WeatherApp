@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot.BLL", "We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot.Tests", "WeatherApp_OKopot.Tests\WeatherApp_OKopot.Tests.csproj", "{A3685530-28BD-4F1F-9012-B25F15C3371B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp_OKopot.IntegrationTests", "WeatherApp_OKopot.IntegrationTests\WeatherApp_OKopot.IntegrationTests.csproj", "{7C1D307F-7BBA-488B-ADC4-F0E372C18293}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,22 @@ Global
 		{A3685530-28BD-4F1F-9012-B25F15C3371B}.Release|x64.Build.0 = Release|Any CPU
 		{A3685530-28BD-4F1F-9012-B25F15C3371B}.Release|x86.ActiveCfg = Release|Any CPU
 		{A3685530-28BD-4F1F-9012-B25F15C3371B}.Release|x86.Build.0 = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|x64.Build.0 = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|ARM.Build.0 = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|x64.ActiveCfg = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|x64.Build.0 = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C1D307F-7BBA-488B-ADC4-F0E372C18293}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

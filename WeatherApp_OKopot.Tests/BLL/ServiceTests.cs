@@ -77,9 +77,7 @@ namespace WeatherApp_OKopot.Tests.BLL
             var city = servise.CheckingCity(cityName, rootObj, addToList);
 
             //Assert
-            Assert.AreEqual(cityName, city.Name);
-            Assert.AreEqual("Kharkiv", city.AlternativeName);
-            Assert.IsTrue(city.AddToMainList);
+            Assert.That(cityName == city.Name && "Kharkiv" == city.AlternativeName && city.AddToMainList);
             mockUOF.Verify(a => a.Cities.Find(It.IsAny<Func<City, bool>>()), Times.AtLeastOnce);
             mockUOF.Verify(a => a.Cities.Create(It.IsAny<City>()), Times.AtLeastOnce);
             mockUOF.Verify(a => a.Save(), Times.AtLeastOnce);
@@ -103,9 +101,7 @@ namespace WeatherApp_OKopot.Tests.BLL
             var city = servise.CheckingCity(cityName, rootObj, addToList);
 
             //Assert
-            Assert.AreEqual(cityName, city.Name);
-            Assert.AreEqual("Kharkiv", city.AlternativeName);
-            Assert.IsTrue(city.AddToMainList);
+            Assert.That(cityName == city.Name && "Kharkiv" == city.AlternativeName && city.AddToMainList);
         }
 
         [Test]
