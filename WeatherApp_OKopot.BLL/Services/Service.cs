@@ -31,7 +31,7 @@ namespace WeatherApp_OKopot.BLL.Services
         public IEnumerable<WeatherDTO> FindWeathers(string cityName)
         {
             if(cityName == "")
-                throw new ValidationException("There's no city like in the field", "city");
+                throw new ValidationException("There's no city like <" + cityName + ">", "city");
             
             var result = Mapper.Map<IEnumerable<Weather>, List<WeatherDTO>>(Database.Weathers.Find(item => item.City.Name == cityName));
 
@@ -127,10 +127,9 @@ namespace WeatherApp_OKopot.BLL.Services
 
         public void DeleteCitiesFromMainList(string cityName)
         {
-            if (String.IsNullOrEmpty(cityName))
-                throw new ValidationException("There's no city like in the field", "ListOfCities");
-
-            var city = Database.Cities.GetAll().First(item => item.Name == cityName);
+            var city = Database.Cities.GetAll().FirstOrDefault(item => item.Name == cityName);
+            if (city == null)
+                throw new ValidationException("There's no city like <" + cityName + ">", "ListOfCities");
             city.AddToMainList = false;
             Database.Cities.Update(city);
             Database.Save();
@@ -139,11 +138,23 @@ namespace WeatherApp_OKopot.BLL.Services
         public CityDTO GetCityByName(string cityName)
         {
             if(cityName == "")
-                throw new ValidationException("There's no city like in the field", "city");
+                throw new ValidationException("There's no city like <" + cityName + ">", "city");
 
             var result = Mapper.Map<City, CityDTO>(Database.Cities.GetAll().First(item => item.Name == cityName));
 
             return result;
+        }
+
+        public void AddCityToMainList(string cityName)
+        {
+            var city = Database.Cities.GetAll().FirstOrDefault(a => a.Name == cityName);
+            if (city != null)
+            {
+                city.AddToMainList = true;
+                Database.Cities.Update(city);
+                Database.Save();
+            }
+            else throw new ValidationException("There's no city like <" + cityName + ">", "cityName");
         }
 
         public void DeleteHistories()

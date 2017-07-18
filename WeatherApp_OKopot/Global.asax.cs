@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
+using MultipartDataMediaFormatter;
+using MultipartDataMediaFormatter.Infrastructure;
 using WeatherApp_OKopot.BLL.Infrastructure;
 using WeatherApp_OKopot.Infrastructure;
 
@@ -16,6 +19,7 @@ namespace WeatherApp_OKopot
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
@@ -24,6 +28,9 @@ namespace WeatherApp_OKopot
                 cfg.AddProfile(new MapperWebProfile());
                 cfg.AddProfile(new MapperBLLProfile());
             });
+
+            GlobalConfiguration.Configuration.Formatters.Add
+                (new FormMultipartEncodedMediaTypeFormatter(new MultipartFormatterSettings()));
         }
     }
 }

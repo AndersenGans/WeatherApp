@@ -13,6 +13,7 @@ namespace WeatherApp_OKopot.BLL.Interfaces
         Task GetManyDaysWeathers(string cityName, string key, int countOfDays);
         IEnumerable<HistoryDTO> GetHistories();
         CityDTO GetCityByName(string cityName);
+        void AddCityToMainList(string cityName);
         void DeleteCitiesFromMainList(string cityName);
         void DeleteHistories();
         void Dispose();

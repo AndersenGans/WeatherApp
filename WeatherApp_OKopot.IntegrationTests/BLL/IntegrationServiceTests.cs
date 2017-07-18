@@ -45,7 +45,7 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public async Task GetDailyWeathers_When_GiveCorrectParametrs_Then_SavesWeathersAndHistoriesToDB()
         {
             //Arrange
-            var cityName = "Киев";
+            var cityName = "Kyiv";
             var addToList = true;
 
             //Act
@@ -60,7 +60,7 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public async Task GetManyDaysWeathers_When_GiveCorrectParametrs_Then_SavesWeathersAndHistoriesToDB()
         {
             //Arrange
-            var cityName = "Киев";
+            var cityName = "Kyiv";
             var countOfDays = 7;
 
             //Act
@@ -75,7 +75,7 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public async Task FindWeathers_When_GiveCorrectParametrs_Then_ReturnsCollectionOfWeathers()
         {
             //Arrange
-            var cityName = "Киев";
+            var cityName = "Kyiv";
             var countOfDays = 7;
             //Act
             await service.GetManyDaysWeathers(cityName, key, countOfDays);
@@ -91,7 +91,7 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public async Task GetHistories_When_GiveCorrectParametrs_Then_ReturnsCollectionOfHistories()
         {
             //Arrange
-            var cityName = "Киев";
+            var cityName = "Kyiv";
             var countOfDays = 7;
 
             //Act
@@ -104,26 +104,40 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         }
 
         [Test]
-        public async Task DeleteCitiesFromMainList_When_GiveCorrectCityName_Then_CityProperty_addToMainList_ChangeToFalse()
+        public void DeleteCitiesFromMainList_When_GiveCorrectCityName_Then_CityProperty_addToMainList_ChangeToFalse()
         {
             //Arrange
-            var cityName = "Киев";
-            var addToList = true;
-
+            var cityName = "Kyiv";
+            
             //Act
-            await service.GetDailyWeathers(cityName, key, addToList);
+            service.AddCityToMainList(cityName);
             service.DeleteCitiesFromMainList(cityName);
-            var result = service.FindCitiesToAddToMainList();
+            var result = service.GetCityByName(cityName);
 
             //Assert
-            Assert.That(result.All(a => a.Name != cityName));
+            Assert.That(!result.AddToMainList);
         }
+
+        public void AddCityToMainList_When_GiveCorrectCityName_Then_CityProperty_addToMainList_ChangeToTrue()
+        {
+            //Arrange
+            var cityName = "Kyiv";
+
+            //Act
+            service.DeleteCitiesFromMainList(cityName);
+            service.AddCityToMainList(cityName);
+            var result = service.GetCityByName(cityName);
+
+            //Assert
+            Assert.That(result.AddToMainList);
+        }
+
 
         [Test]
         public void GetCityByName_When_GiveCorrectCityName_Then_ReturnInstanseOfCityDTO()
         {
             //Arrange
-            var cityName = "Киев";
+            var cityName = "Kyiv";
 
             //Act
             var result = service.GetCityByName(cityName);
@@ -148,7 +162,7 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public void CheckingCity_When_GiveCorrectParametrs_Then_ReturnInstanseOfCity()
         {
             //Arrange
-            var cityName = "Харьков";
+            var cityName = "Kharkiv";
             var rootObj = new RootObject()
             {
                 city = new CityAPI()
@@ -171,11 +185,11 @@ namespace WeatherApp_OKopot.IntegrationTests.BLL
         public async Task RequestingFromAPI_When_GiveCorrectParametrs_Then_RetirnInstanseOfRootObj()
         {
             //Act
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             int countOfDays = 1;
 
             //Act
-            var rootObj = service.RequestingFromAPI(cityName, countOfDays, key);
+            var rootObj = await service.RequestingFromAPI(cityName, countOfDays, key);
 
             //Assert
             Assert.IsNotNull(rootObj);

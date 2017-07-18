@@ -19,7 +19,7 @@ namespace WeatherApp_OKopot.DAL.Repositories
 
         public IEnumerable<City> GetAll()
         {
-            return dbContext.Cities;
+            return dbContext.Cities; 
         }
 
         public City Get(int id)

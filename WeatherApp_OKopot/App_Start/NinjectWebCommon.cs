@@ -1,6 +1,7 @@
-using System.Web.Mvc;
+using System.Web.Http;
+using System.Web.Http.Dependencies;
 using Ninject.Modules;
-using Ninject.Web.Mvc;
+using Ninject.Web.WebApi;
 using WeatherApp_OKopot.BLL.Infrastructure;
 using WeatherApp_OKopot.Infrastructure;
 
@@ -16,6 +17,8 @@ namespace WeatherApp_OKopot.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using WeatherApp_OKopot.BLL.Interfaces;
+    using WeatherApp_OKopot.BLL.Services;
 
     public static class NinjectWebCommon 
     {
@@ -53,6 +56,7 @@ namespace WeatherApp_OKopot.App_Start
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
                 RegisterServices(kernel);
+                GlobalConfiguration.Configuration.DependencyResolver = new Ninject.Web.WebApi.NinjectDependencyResolver(kernel);
                 return kernel;
             }
             catch
@@ -68,7 +72,8 @@ namespace WeatherApp_OKopot.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver(kernel));
+            kernel.Bind<IService>().To<Service>();
+            //DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver(kernel));
         }        
     }
 }

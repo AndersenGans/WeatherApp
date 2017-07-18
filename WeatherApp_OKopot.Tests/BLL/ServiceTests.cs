@@ -48,7 +48,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public async Task RequestingFromAPI_When_GiveCityName_and_CountOfDays_and_Key_Then_ReturnsCorrectResponce()
         {
             //Arrange
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             int countOfDays = 1;
             string key = "a0e092f89087b55a736a66d0519de7cb";
             
@@ -63,7 +63,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public void CheckingCity_When_GiveCityNameWhichIsInTheDB_and_OtherCorrectParametrs_Then_ReturnsCorrectInstanceOfCity()
         {
             //Arrange
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             bool addToList = true;
             var rootObj = new RootObject()
             {
@@ -87,7 +87,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public void CheckingCity_When_GiveCityNameWhichIsNotInTheDB_and_OtherCorrectParametrs_Then_ReturnsCorrectInstanceOfCity()
         {
             //Arrange
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             bool addToList = true;
             var rootObj = new RootObject()
             {
@@ -108,7 +108,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public void FindWeathers_When_GiveCityNameCorrect_Then_ReturnsCollectionOfWeathers()
         {
             //Arrange
-            var cityName = "Харьков";
+            var cityName = "Kharkiv";
             mockUOF.Setup(s => s.Weathers.Find(It.IsAny<Func<Weather, bool>>()))
                 .Returns(new List<Weather>(){ new Weather() });
             
@@ -123,7 +123,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public void DeleteCitiesFromMainList_When_GiveCorrectCityName_Then_CallMethodsUpdate_and_Save()
         {
             //Arrange
-            var cityName = "Харьков";
+            var cityName = "Kharkiv";
 
             //Act
             servise.DeleteCitiesFromMainList(cityName);
@@ -133,11 +133,25 @@ namespace WeatherApp_OKopot.Tests.BLL
             mockUOF.Verify(a => a.Save(), Times.AtLeastOnce);
         }
 
-       [Test]
+        [Test]
+        public void AddCityToMainList_When_GiveCorrectCityName_Then_CallMethodsUpdate_and_Save()
+        {
+            //Arrange
+            var cityName = "Kharkiv";
+
+            //Act
+            servise.AddCityToMainList(cityName);
+
+            //Assert
+            mockUOF.Verify(a => a.Cities.Update(It.IsAny<City>()), Times.AtLeastOnce);
+            mockUOF.Verify(a => a.Save(), Times.AtLeastOnce);
+        }
+
+        [Test]
         public void GetCityByName_When_GiveCityNameCorrect_Then_ReturnsInstanceCityDTO()
         {
             //Arrange
-            var cityName = "Харьков";
+            var cityName = "Kharkiv";
 
             //Act
             var city = servise.GetCityByName(cityName);
@@ -150,7 +164,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public async Task GetDailyWeathers_When_GiveCorrectParams_Then_DailyWeatherSavesToDB()
         {
             //Arrange
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             bool addToList = true;
             string key = "a0e092f89087b55a736a66d0519de7cb";
 
@@ -168,7 +182,7 @@ namespace WeatherApp_OKopot.Tests.BLL
         public async Task GetManyDaysWeathers_When_GiveCorrectParams_Then_DailyWeatherSavesToDB()
         {
             //Arrange
-            string cityName = "Харьков";
+            string cityName = "Kharkiv";
             int countDays = 3;
             string key = "a0e092f89087b55a736a66d0519de7cb";
 
@@ -181,20 +195,22 @@ namespace WeatherApp_OKopot.Tests.BLL
             mockUOF.Verify(a => a.Save(), Times.AtLeastOnce);
         }
 
+
+
         private List<City> GetStubForCities() {
             List<City> cities = new List<City>
             {
                 new City
                 {
-                    CityId = 1, AddToMainList = false, Name = "Харьков", AlternativeName = ""
+                    CityId = 1, AddToMainList = false, Name = "Kharkiv", AlternativeName = ""
                 },
                 new City
                 {
-                    CityId = 2, AddToMainList = false, Name = "Киев", AlternativeName = ""
+                    CityId = 2, AddToMainList = false, Name = "Kyiv", AlternativeName = ""
                 },
                 new City
                 {
-                    CityId = 3, AddToMainList = false, Name = "Львов", AlternativeName = ""
+                    CityId = 3, AddToMainList = false, Name = "Lviv", AlternativeName = ""
                 },
             };
 
@@ -207,27 +223,27 @@ namespace WeatherApp_OKopot.Tests.BLL
             {
                 new Weather
                 {
-                    CityId = 1, WeatherId = 1, City = new City{ CityId = 1, Name = "Харьков"}
+                    CityId = 1, WeatherId = 1, City = new City{ CityId = 1, Name = "Kharkiv"}
                 },
                 new Weather
                 {
-                    CityId = 1, WeatherId = 2, City = new City{ CityId = 1, Name = "Харьков"}
+                    CityId = 1, WeatherId = 2, City = new City{ CityId = 1, Name = "Kharkiv"}
                 },
                 new Weather
                 {
-                    CityId = 2, WeatherId = 3, City = new City{ CityId = 2, Name = "Киев"}
+                    CityId = 2, WeatherId = 3, City = new City{ CityId = 2, Name = "Kyiv"}
                 },
                 new Weather
                 {
-                    CityId = 2, WeatherId = 4, City = new City{ CityId = 2, Name = "Киев"}
+                    CityId = 2, WeatherId = 4, City = new City{ CityId = 2, Name = "Kyiv"}
                 },
                 new Weather
                 {
-                    CityId = 3, WeatherId = 3, City = new City{ CityId = 3, Name = "Львов"}
+                    CityId = 3, WeatherId = 3, City = new City{ CityId = 3, Name = "Lviv"}
                 },
                 new Weather
                 {
-                    CityId = 3, WeatherId = 4, City = new City{ CityId = 3, Name = "Львов"}
+                    CityId = 3, WeatherId = 4, City = new City{ CityId = 3, Name = "Lviv"}
                 }
             };
             return weathers;

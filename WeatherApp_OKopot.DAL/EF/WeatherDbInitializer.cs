@@ -17,27 +17,27 @@ namespace WeatherApp_OKopot.DAL.EF
                 {
                     new City
                     {
-                        Name = "Киев",
+                        Name = "Kyiv",
                         AddToMainList = true
                     },
                     new City
                     {
-                        Name = "Львов",
+                        Name = "Lviv",
                         AddToMainList = true
                     },
                     new City
                     {
-                        Name = "Днепропетровск",
+                        Name = "Dnipropetrovsk",
                         AddToMainList = true
                     },
                     new City
                     {
-                        Name = "Харьков",
+                        Name = "Kharkiv",
                         AddToMainList = true
                     },
                     new City
                     {
-                        Name = "Одесса",
+                        Name = "Odessa",
                         AddToMainList = true
                     }
                 }
