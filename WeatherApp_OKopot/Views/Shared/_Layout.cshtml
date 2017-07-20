@@ -7,37 +7,53 @@
     <title>@ViewBag.Title – Andersen's Weather App</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="../../Content/header.css"/>
+    <link rel="stylesheet" href="../../Content/footer.css"/>
+    <link rel="stylesheet" href="../../Content/body.css">
 </head>
 <body>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            @*<div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Weather App", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
-                </ul>
-            </div>
+<header>
+    <div id="header-flexbox">
+        <div ><a href="/Home/Index"><img id="logo" src="../../Content/TWF-Logo.png" /></a></div>
+        <div id="links">
+            <span><b>@Html.ActionLink("Main page", "Index", "Home")</b></span> |
+            <span><b>@Html.ActionLink("History of requests", "HistoryOfWeather", "Home")</b></span>
         </div>
-    </div>*@
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p class="back">&copy; @DateTime.Now.Year – Andersen's Weather App</p>
-        </footer>
+    </div>
+</header>
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    
+</div>
+<footer>
+    <div id="footer-class">
+        <div id="left-side" >
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Maecenas sit amet lorem velit. Praesent eu consectetur tortor. 
+                Aenean odio purus, feugiat et rutrum sed, accumsan et quam.
+                Curabitur eget sapien sapien. Nunc ut justo a dui consectetur euismod non sed dolor.
+            </p>
+        </div>
+        <div id="right-side">
+            <div>
+                Skype: WeatherApp_ <br />
+                Email: weather_app@yandex.ru<br />
+                VK: andersen_gans
+            </div>
+
+            <div class="img-footer"><img src="/Content/facebook.png">
+            <img src="/Content/twitter.png">
+                <img src="/Content/linkedin.png"> <br />
+            </div>
+            <p>&copy; @DateTime.Now.Year – Andersen's Weather App</p>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+</footer>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>

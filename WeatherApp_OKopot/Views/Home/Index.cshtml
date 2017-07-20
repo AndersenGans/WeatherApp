@@ -10,89 +10,86 @@
 <script src="~/Scripts/buttons-control.js"></script>
 
 
+
     <div class="jumbotron back">
         <h1>Weather App</h1>
         <p>Weather App is a service helps you to know the weather of your town, or city, or place where you live.</p>
     </div>
 
-<div class="container back">
-    <div class="col-md-4 my-row-padding">
-        <div class="row my-row-margin">
-            <div>
-                <h4>Select city...</h4>
-                @*@Html.DropDownList("ListOfCities", null, new {@class = "form-control"})*@
-                
-                @using (Html.BeginForm("DeleteCity", "Home"))
-                {
-                    @Html.DropDownListFor(model => model.ListOfCities, Model.ListOfCities as SelectList, new { @class = "form-control" })
-                    @Html.ValidationMessage("ListOfCities", new { @class = "text-danger" })<br />
-                    <input type="submit" id="btn-del" value="Delete from list" class="btn btn-default">
-                }
-            </div>
-        </div>
-
-        <div class="row my-row-margin">
-            <div>
-                <h4>...or write name of it:</h4>
-                @using (Html.BeginForm("ShowDailyWeather", "Home"))
-                {
-                    <input type="search" id="city" name="search" placeholder="Поиск по городу" class="form-control">
-                    @Html.ValidationMessage("city", new { @class = "text-danger" })<br/>
-                    <input type="submit" id="btn-find" value="Find" class="btn btn-default">
-                    @Html.CheckBox("addToMainList", false, new { @class= "checkbox checkbox-inline" })
-                    <span>Add to main list</span>
-                }
-            </div>
+<div id="body-flex">
+    <div id="filters">
+        <div>
+            <h4>Select city...</h4>
+            @using (Html.BeginForm("DeleteCity", "Home"))
+            {
+                @Html.DropDownListFor(model => model.ListOfCities, Model.ListOfCities as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessage("ListOfCities", new { @class = "text-danger" })
+                <input type="submit" id="btn-del" value="Delete from list" class="btn btn-default" style="display: block;">
+            }
+            <br/>
+            <h4>...or write name of it:</h4>
+            @using (Html.BeginForm("ShowDailyWeather", "Home"))
+            {
+                <input type="search" id="city" name="search" placeholder="Search by city" class="form-control">
+                @Html.ValidationMessage("city", new { @class = "text-danger" })
+                <input type="submit" id="btn-find" value="Find" class="btn btn-default" style="display: block;">
+                @Html.CheckBox("addToMainList", false, new { @class= "checkbox checkbox-inline" })
+                <span style="font-size: 11pt;">Add to main list</span>
+            }
         </div>
     </div>
-    <div class="col-md-8 back my-row-padding">
-        <div class="container" style="background: lightsteelblue">
+
+    <div id="weathers">
+        @if (Model.Weathers != null)
+        {
             <div id="results">
-                @if (Model.Weathers != null)
-                {
-                    <div class="row back">
-                        <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">
-                        <input type="button" id="three-day-btn" value="Next three day" class="btn btn-default" onclick="three_day_btn()">
-                        <input type="button" id="week-btn" value="Next week" class="btn btn-default" onclick="week_btn()">
+                <div id="buttons">
+
+                    <input type="button" id="day-btn" value="Today" class="btn btn-default" onclick="day_btn()">
+                    <input type="button" id="three-day-btn" value="Next three day" class="btn btn-default" onclick="three_day_btn()">
+                    <input type="button" id="week-btn" value="Next week" class="btn btn-default" onclick="week_btn()">
                     </div>
                     <input type="hidden" id="cityName" value=@Model.CityName>
-                    <table class="table">
+                    <div id="flex-table">
 
-                        <tr>
-                            <td><b style="font-size: 16pt;"> @Model.CityName</b></td>
-                        </tr>
+                        <div>
+                            <b style="font-size: 13pt;"> @Model.CityName</b>
+                        </div> 
                         @foreach (var item in Model.Weathers)
                         {
-                            <tr>
-                                <td class="weather-item">
-                                    <span>@item.Day.DayOfWeek</span>
-                                    <br/>
+                            <div id="flex-inside-table">
+                                <div id="first-column" class="weather-item">
+                                    @if (item.Day == DateTime.Today)
+                                    {
+                                        <span id="today">@item.Day.DayOfWeek</span>
+                                        <br/>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Day.DayOfWeek</span>
+                                        <br/>
+                                    }
                                     <span>@item.Day.Year-@item.Day.Month-@item.Day.Day</span>
-                                </td>
-                                <td>
+                                </div>
+                                <div class="weather-item">
                                     <img alt="@item.DescWeather" src="/Content/w_img/@item.IconId"/>
-                                </td>
-                                <td class="weather-item">
+                                </div>
+                                <div class="weather-item">
                                     <span>@item.MainWeather</span> <br/>
                                     <span class="list-day">@item.DayAvgTemp °C</span>
                                     <span class="list-night">@item.DayMinTemp °C</span>
-                                </td>
-                                <td>
+                                </div>
+                                <div class="weather-item">
                                     <span>Wind speed: @item.WindSpeed m/s</span><br/>
-                                    <span>Pressure: @item.Pressure hpa</span>
-                                </td>
-                                <td>
-                                    <span>Clouds: @item.Cloudiness %</span><br/>
+                                    <span>Pressure: @item.Pressure hpa</span> <br/>
+                                    <span>Clouds: @item.Cloudiness %</span><br />
                                     <span>Humidity: @item.Humidity %</span>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         }
-                    </table>
-                }
+                    </div>
+                
             </div>
-        </div>
+        }
     </div>
-</div>
-<div class="back">
-    @Html.ActionLink("Show history of requests", "HistoryOfWeather")
 </div>

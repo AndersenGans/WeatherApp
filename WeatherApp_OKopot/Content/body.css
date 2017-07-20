@@ -1,0 +1,59 @@
+﻿
+#body-flex {
+    display: flex;
+    justify-content: center;
+    background: burlywood;
+    font-size: 13pt;
+    width: 100%;
+    padding: 20px;
+}
+
+#flex-table {
+    display: flex;
+    padding: 8px;
+    flex-direction: column;
+}
+
+    #flex-table #flex-inside-table {
+        display: flex;
+        justify-content: space-around;
+    }
+
+#first-column {
+    flex-basis: 20%;
+}
+
+#today:after {
+    content: "Today!";
+    font-size: 80%;
+    color: #333;
+    background-color: orange;
+    padding: 2px;
+    margin: 0 0 0 5px;
+}
+
+#flex-table div {
+    display: inline-block;
+    padding: 5px;
+}
+
+#filters { flex-basis: 35%; }
+
+#weathers {
+    margin: 0 20px 10px 20px;
+    flex-basis: 65%;
+    font-size: 13pt;
+}
+
+#buttons {
+    margin: 8px 8px 0 8px;
+    padding: 5px;
+}
+
+#results {
+    font-size: 10pt;
+    background: lightsteelblue;
+}
+
+h4 { margin: 0; }
+

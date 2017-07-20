@@ -7,7 +7,6 @@
 <h2 class="back">History of requests</h2>
     
 <div class="back">
-    @Html.ActionLink("Back", "Index") |
     @Html.ActionLink("Clear", "ClearHistory")
     <table class="table">
         <tr style="font-size: 16pt;">
@@ -47,10 +46,8 @@
                      </td>
                      <td>
                          <span>Wind speed: @item.City.Weathers.ToList()[0].WindSpeed m/s</span><br/>
-                         <span>Pressure: @item.City.Weathers.ToList()[0].Pressure hpa</span>
-                     </td>
-                     <td>
-                         <span>Clouds: @item.City.Weathers.ToList()[0].Cloudiness %</span><br/>
+                         <span>Pressure: @item.City.Weathers.ToList()[0].Pressure hpa</span> <br/>
+                         <span>Clouds: @item.City.Weathers.ToList()[0].Cloudiness %</span><br />
                          <span>Humidity: @item.City.Weathers.ToList()[0].Humidity %</span>
                      </td>
                  </tr>

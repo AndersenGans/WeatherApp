@@ -7,8 +7,9 @@ $(document).ready(function() {
         var list = document.getElementById("ListOfCities");
         city = list.options[list.selectedIndex].value;
         var result = encodeURIComponent(city);
-        $('#results').empty();
-        $('#results').load("/Home/ShowDailyWeatherPartial?search=" + result);
+        console.log(result);
+        $('#weathers').empty();
+        $('#weathers').load("/Home/ShowDailyWeatherPartial?search=" + result);
     });
     if (document.getElementById("cityName") !== null)
     city = document.getElementById("cityName").value;

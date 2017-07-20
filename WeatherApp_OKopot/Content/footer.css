@@ -1,0 +1,37 @@
+﻿footer {
+    margin-bottom: 0;
+}
+
+
+#footer-class {
+    display: flex;
+    justify-content: space-between;
+    background: burlywood;
+    font-size: 10pt;
+    width: 100%;
+    align-content: center;
+}
+#footer-class div{  
+    display: inline-block;
+    flex-basis:50%;
+}
+    #footer-class img {
+        height: 50px;
+        width: 50px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+#right-side{
+    padding: 20px 20px 10px 30px;
+    border-left: 3px solid black;
+    
+}
+
+#left-side{
+    padding: 20px 20px 10px 20px;  
+}
+
+.img-footer {
+    margin-left: 50px;
+}
