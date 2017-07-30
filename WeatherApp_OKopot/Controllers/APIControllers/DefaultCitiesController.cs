@@ -20,11 +20,6 @@ namespace WeatherApp_OKopot.Controllers.APIControllers
             return Json(result);
         }
 
-        // POST: api/DefaultCities
-        //public IHttpActionResult Post([FromBody] FormData data)
-        //{
-        //}
-
         // PUT: api/DefaultCities/Kharkiv
         public IHttpActionResult Put(string cityName)
         {
