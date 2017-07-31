@@ -25,7 +25,9 @@ namespace WeatherApp_OKopot.BLL.Services
 
         public IEnumerable<CityDTO> FindCitiesToAddToMainList()
         {
-            return Mapper.Map<IEnumerable<City>, List<CityDTO>>(Database.Cities.Find(item => item.AddToMainList));
+            var result = Mapper.Map<IEnumerable<City>, List<CityDTO>>(Database.Cities.Find(item => item.AddToMainList));
+
+            return result;
         }
 
         public IEnumerable<WeatherDTO> FindWeathers(string cityName)
@@ -128,8 +130,10 @@ namespace WeatherApp_OKopot.BLL.Services
         public void DeleteCitiesFromMainList(string cityName)
         {
             var city = Database.Cities.GetAll().FirstOrDefault(item => item.Name == cityName);
+
             if (city == null)
                 throw new ValidationException("There's no city like <" + cityName + ">", "ListOfCities");
+
             city.AddToMainList = false;
             Database.Cities.Update(city);
             Database.Save();
@@ -148,6 +152,7 @@ namespace WeatherApp_OKopot.BLL.Services
         public void AddCityToMainList(string cityName)
         {
             var city = Database.Cities.GetAll().FirstOrDefault(a => a.Name == cityName);
+
             if (city != null)
             {
                 city.AddToMainList = true;
@@ -223,8 +228,8 @@ namespace WeatherApp_OKopot.BLL.Services
         internal async Task<RootObject> RequestingFromAPI(string cityName, int countOfDays, string key)
         {
             var client = new HttpClient();
-            var response = client.GetAsync("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName +
-                                      "&units=metric&cnt=" + countOfDays + "&APPID=" + key).Result;
+            var response = await client.GetAsync("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName +
+                                      "&units=metric&cnt=" + countOfDays + "&APPID=" + key);
 
             if (response.IsSuccessStatusCode)
             {
