@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Http;
 using WeatherApp_OKopot.BLL.Infrastructure;
@@ -22,11 +23,11 @@ namespace WeatherApp_OKopot.Controllers.APIControllers
         }
 
         // GET: api/Weathers/Kharkiv/3
-        public IHttpActionResult Get(string cityName, int countOfDays)
+        public async Task<IHttpActionResult> Get(string cityName, int countOfDays)
         {
             try
             {
-                service.GetManyDaysWeathers(cityName, key, countOfDays);
+                await service.GetManyDaysWeathers(cityName, key, countOfDays);
                 var result = service.FindWeathers(cityName);
                 return Json(result);
             }
